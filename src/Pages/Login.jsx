@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
-import firebaseCRUD from "../components/Functions/Crud";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Login_localStorage from "../components/Functions/Login";
+import ForgotPasswordModal from "../Modals/ForgotPassword";
 
 const LoginPage = () => {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const { _data } = firebaseCRUD();
-  const navigate = useNavigate();
-  const storedUserDataString = localStorage.getItem("userData");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userData = _data.find(
-      (data) => data.Username === userName && data.Password === password
-    );
-    if (userData) {
-      localStorage.setItem("userData", JSON.stringify(userData));
-      navigate("/chat");
-    } else {
-      setErrorMessage("Incorrect username or password. Please try again.");
-    }
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
+  const handleForgotPasswordClick = () => {
+    setIsForgotPasswordModalOpen(true);
   };
 
-  useEffect(() => {
-    if (storedUserDataString) navigate("/chat");
-  });
+  const handleCloseForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(false);
+  };
+
+  const {
+    rememberMe,
+    handleRememberMe,
+    userName,
+    setUserName,
+    password,
+    setPassword,
+    errorMessage,
+    handleSubmit,
+  } = Login_localStorage();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -88,6 +85,8 @@ const LoginPage = () => {
                 name="remember-me"
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                onClick={handleRememberMe}
+                defaultChecked={rememberMe}
               />
               <label
                 htmlFor="remember-me"
@@ -101,6 +100,7 @@ const LoginPage = () => {
               <a
                 href="#"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
+                onClick={handleForgotPasswordClick}
               >
                 Forgot your password?
               </a>
@@ -140,7 +140,7 @@ const LoginPage = () => {
           <p className="text-center text-sm text-gray-600">
             Don't have an account?
             <a
-              href="#"
+              href="/signup"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
               Create one here
@@ -148,6 +148,10 @@ const LoginPage = () => {
           </p>
         </div>
       </div>
+      <ForgotPasswordModal
+        isOpen={isForgotPasswordModalOpen}
+        onClose={handleCloseForgotPasswordModal}
+      />
     </div>
   );
 };
