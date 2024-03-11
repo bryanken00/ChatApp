@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 const tableName = "contacts";
 
 const Contacts = () => {
-  const [_data, _setData] = useState([]);
+  const [contactReadData, _setData] = useState([]);
   const userCollectionRef = collection(db, tableName);
 
   const createData = async (username, password) => {
@@ -45,7 +45,7 @@ const Contacts = () => {
     readData();
   };
 
-  return { createData, _data, updateData, deleteData };
+  return { createData, contactReadData, updateData, deleteData };
 };
 
 export default Contacts;

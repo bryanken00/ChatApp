@@ -1,16 +1,16 @@
 import { useState } from "react";
-import userFirebase from "../components/Functions/Crud";
+import userFirebase from "../components/Functions/login";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { _data, createData } = userFirebase();
+  const { loginReadData, createData } = userFirebase();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      if (_data.some((user) => user.Username === email)) {
+      if (loginReadData.some((user) => user.Username === email)) {
         setMessage("Username already taken");
       } else {
         createData(email, password);

@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 const tableName = "users";
 
 const firebaseCRUD = () => {
-  const [_data, _setData] = useState([]);
+  const [loginReadData, _setData] = useState([]);
   const userCollectionRef = collection(db, tableName);
 
   const createData = async (username, password) => {
@@ -45,7 +45,7 @@ const firebaseCRUD = () => {
     readData();
   };
 
-  return { createData, _data, updateData, deleteData };
+  return { createData, loginReadData, updateData, deleteData };
 };
 
 export default firebaseCRUD;
