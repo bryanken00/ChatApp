@@ -1,52 +1,18 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import firebaseMessage from "../components/Functions/message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Chat from "../components/PagesFunction/Chat";
 
 const ChatApp = () => {
-  const storedUserDataString = localStorage.getItem("userData");
-  const storedUserData = JSON.parse(storedUserDataString);
-  const username = storedUserData.Username;
-  const [message, setMessage] = useState("");
-  const { _data, readData, createData } = firebaseMessage();
-
-  const navigate = useNavigate();
-
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [contactListWidth, setContactListWidth] = useState("20rem");
-  const [isOpen, setDrawer] = useState(false);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer((prevTimer) => prevTimer + 1);
-    }, 1500);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    setRefreshKey((prevKey) => prevKey + 1);
-    readData();
-  }, [timer]);
-
-  useEffect(() => {
-    if (!storedUserDataString) navigate("/");
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("userData");
-    navigate("/");
-  };
-
-  const handleSendMessage = () => {
-    createData(username, message);
-    setMessage("");
-  };
-
+  const {
+    handleLogout,
+    handleSendMessage,
+    chatReadData,
+    username,
+    message,
+    setMessage,
+    isOpen,
+    setDrawer,
+  } = Chat();
   return (
     <div className="flex h-screen bg-gray-200">
       {/* Left Side - Contact List */}
@@ -90,7 +56,7 @@ const ChatApp = () => {
           </span>
         </div>
         <div className="flex-1 overflow-y-auto px-4 py-2">
-          {_data.map((account) =>
+          {chatReadData.map((account) =>
             account.username !== username ? (
               <div key={account.id} className="flex flex-col mb-4 text-left">
                 <span className="font-semibold">{account.username}:</span>

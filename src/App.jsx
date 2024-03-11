@@ -15,6 +15,7 @@ const App = () => {
         </Route>
         <Route element={<ChatLayout />}>
           <Route path="/chat" element={<ChatApp />} />
+          <Route path="/chat/:id" element={<ChatApp />} />
         </Route>
       </Routes>
     </>

@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 const tableName = "conversations";
 
 const firebaseMessage = () => {
-  const [_data, _setData] = useState([]);
+  const [chatReadData, _setData] = useState([]);
   const userCollectionRef = collection(db, tableName);
   const currentDate = Timestamp.now();
 
@@ -51,7 +51,7 @@ const firebaseMessage = () => {
     readData();
   };
 
-  return { createData, _data, updateData, deleteData, readData };
+  return { createData, chatReadData, updateData, deleteData, readData };
 };
 
 export default firebaseMessage;
