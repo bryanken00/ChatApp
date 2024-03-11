@@ -61,6 +61,14 @@ const ChatApp = () => {
     }, 3000);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      if (id !== undefined) {
+        handleSendMessage();
+      }
+    }
+  };
+
   const chatSystem = (id, chatReadData, username) => {
     const filteredChat = chatReadData.filter(
       (account) => account.chat_uid === id
@@ -144,6 +152,7 @@ const ChatApp = () => {
               className="flex-1 border-2 border-gray-500 rounded-full px-4 py-2 mr-2 bg-gray-800 text-white"
               onChange={(event) => setMessage(event.target.value)}
               value={message}
+              onKeyDown={handleKeyDown}
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-full"
