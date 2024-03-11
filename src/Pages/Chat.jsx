@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import firebaseMessage from "../components/Functions/message";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const ChatApp = () => {
   const storedUserDataString = localStorage.getItem("userData");
@@ -13,6 +15,8 @@ const ChatApp = () => {
 
   const [refreshKey, setRefreshKey] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [contactListWidth, setContactListWidth] = useState("20rem");
+  const [isOpen, setDrawer] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -45,10 +49,43 @@ const ChatApp = () => {
 
   return (
     <div className="flex h-screen bg-gray-200">
+      {/* Left Side - Contact List */}
+      <div
+        className="bg-gray-800 text-white p-4 flex flex-col"
+        style={{
+          width: "20rem",
+          display: isOpen ? "block" : "none",
+        }}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <span className="text-lg font-semibold">Contact Name</span>
+          </div>
+        </div>
+        <ul className="flex flex-col space-y-2">
+          {/* Replace the content below with your contact list */}
+          <li>Friend 1</li>
+          <li>Friend 2</li>
+          <li>Friend 3</li>
+          {/* End of contact list */}
+        </ul>
+      </div>
+      {/* Right Side - Chat Window */}
       <div className="flex flex-col w-full">
         <div className="bg-gray-700 text-white p-4 flex justify-between items-center">
-          <span className="text-lg font-semibold">Contact Name</span>
-          <span className="text-lg font-semibold" onClick={handleLogout}>
+          <div>
+            <button
+              className="text-white px-2 py-1 rounded-full bg-gray-700"
+              onClick={() => setDrawer(!isOpen)}
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </button>
+            <span className="text-lg font-semibold">Contact Name</span>
+          </div>
+          <span
+            className="text-lg font-semibold cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </span>
         </div>
