@@ -12,9 +12,11 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
+const tableName = "conversations";
+
 const firebaseMessage = () => {
   const [_data, _setData] = useState([]);
-  const userCollectionRef = collection(db, "testing");
+  const userCollectionRef = collection(db, tableName);
   const currentDate = Timestamp.now();
 
   const createData = async (username, message) => {
@@ -37,14 +39,14 @@ const firebaseMessage = () => {
   }, []);
 
   const updateData = async (id, Password) => {
-    const userDoc = doc(db, "testing", id);
+    const userDoc = doc(db, tableName, id);
     const newPassword = { Password: Password };
     await updateDoc(userDoc, newPassword);
     readData();
   };
 
   const deleteData = async (id) => {
-    const userDoc = doc(db, "testing", id);
+    const userDoc = doc(db, tableName, id);
     await deleteDoc(userDoc);
     readData();
   };

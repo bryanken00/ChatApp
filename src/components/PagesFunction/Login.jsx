@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import firebaseCRUD from "./Crud";
+import firebaseCRUD from "../Functions/Crud";
 
 const Login_localStorage = () => {
   const navigate = useNavigate();

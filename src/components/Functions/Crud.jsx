@@ -9,9 +9,11 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
+const tableName = "users";
+
 const firebaseCRUD = () => {
   const [_data, _setData] = useState([]);
-  const userCollectionRef = collection(db, "users");
+  const userCollectionRef = collection(db, tableName);
 
   const createData = async (username, password) => {
     await addDoc(userCollectionRef, {
@@ -31,14 +33,14 @@ const firebaseCRUD = () => {
   }, []);
 
   const updateData = async (id, Password) => {
-    const userDoc = doc(db, "users", id);
+    const userDoc = doc(db, tableName, id);
     const newPassword = { Password: Password };
     await updateDoc(userDoc, newPassword);
     readData();
   };
 
   const deleteData = async (id) => {
-    const userDoc = doc(db, "users", id);
+    const userDoc = doc(db, tableName, id);
     await deleteDoc(userDoc);
     readData();
   };

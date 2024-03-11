@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Login_localStorage from "../components/Functions/Login";
+import Login_localStorage from "../components/PagesFunction/Login";
 import ForgotPasswordModal from "../Modals/ForgotPassword";
 
 const LoginPage = () => {
