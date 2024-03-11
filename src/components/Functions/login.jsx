@@ -15,10 +15,11 @@ const firebaseCRUD = () => {
   const [loginReadData, _setData] = useState([]);
   const userCollectionRef = collection(db, tableName);
 
-  const createData = async (username, password) => {
+  const createData = async (username, password, nick) => {
     await addDoc(userCollectionRef, {
       Username: username,
       Password: password,
+      nickname: nick,
     });
     readData();
   };

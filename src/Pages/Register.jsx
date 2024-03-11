@@ -2,6 +2,7 @@ import { useState } from "react";
 import userFirebase from "../components/Functions/login";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -13,7 +14,7 @@ const RegisterPage = () => {
       if (loginReadData.some((user) => user.Username === email)) {
         setMessage("Username already taken");
       } else {
-        createData(email, password);
+        createData(email, password, nickname);
         setMessage("Registration completed");
 
         // Clear input fields
@@ -49,6 +50,22 @@ const RegisterPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
+              />
+            </div>
+            <div>
+              <label htmlFor="nickname" className="sr-only">
+                Nickname
+              </label>
+              <input
+                id="nickname"
+                name="nickname"
+                type="text"
+                autoComplete="nickname"
+                required
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Nickname"
               />
             </div>
             <div>
