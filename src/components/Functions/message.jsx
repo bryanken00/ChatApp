@@ -19,11 +19,12 @@ const firebaseMessage = () => {
   const userCollectionRef = collection(db, tableName);
   const currentDate = Timestamp.now();
 
-  const createData = async (username, message) => {
+  const createData = async (username, message, uid) => {
     await addDoc(userCollectionRef, {
       username: username,
       message: message,
       date: currentDate,
+      chat_uid: uid,
     });
     readData();
   };

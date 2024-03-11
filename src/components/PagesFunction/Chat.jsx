@@ -14,6 +14,7 @@ const Chat = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [timer, setTimer] = useState(0);
   const [isOpen, setDrawer] = useState(false);
+  const [getCUID, setCUID] = useState("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -40,7 +41,7 @@ const Chat = () => {
   };
 
   const handleSendMessage = () => {
-    createData(username, message);
+    createData(username, message, getCUID);
     setMessage("");
   };
 
@@ -53,6 +54,7 @@ const Chat = () => {
     setMessage,
     isOpen,
     setDrawer,
+    setCUID,
   };
 };
 

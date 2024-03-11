@@ -15,10 +15,11 @@ const Contacts = () => {
   const [contactReadData, _setData] = useState([]);
   const userCollectionRef = collection(db, tableName);
 
-  const createData = async (username, password) => {
+  const createData = async (uid, user1, user2) => {
     await addDoc(userCollectionRef, {
-      Username: username,
-      Password: password,
+      id: uid,
+      user1: user1,
+      user2: user2,
     });
     readData();
   };
