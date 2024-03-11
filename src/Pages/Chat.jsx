@@ -5,7 +5,7 @@ import Login from "../components/Functions/login";
 import contact from "../components/Functions/contacts";
 import { useParams, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const ChatApp = () => {
   let { id } = useParams();
@@ -13,6 +13,7 @@ const ChatApp = () => {
   const [activeButton, setActiveButton] = useState(null);
   const [getNickname, setNickname] = useState("Contact Name");
   const navigate = useNavigate();
+  const chatContainerRef = useRef(null);
 
   const {
     handleLogout,
@@ -58,7 +59,7 @@ const ChatApp = () => {
 
     setTimeout(() => {
       setIsClickable(true);
-    }, 3000);
+    }, 1000);
   };
 
   const handleKeyDown = (event) => {
@@ -94,6 +95,19 @@ const ChatApp = () => {
       );
     }
   };
+
+  // Function to scroll to the bottom of the chat container
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  // Scroll to bottom when chatReadData changes (i.e., new messages are added)
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatReadData]);
 
   return (
     <div className="flex h-screen bg-gray-200">
@@ -141,7 +155,10 @@ const ChatApp = () => {
             Logout
           </span>
         </div>
-        <div className="flex-1 overflow-y-auto px-4 py-2">
+        <div
+          className="flex-1 overflow-y-auto px-4 py-2"
+          ref={chatContainerRef}
+        >
           {chatSystem(id, chatReadData, username)}
         </div>
         <div className="p-4 bg-gray-700">
