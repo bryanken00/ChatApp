@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Login_localStorage from "../components/PagesFunction/Login";
 import ForgotPasswordModal from "../Modals/ForgotPassword";
 
 const LoginPage = () => {
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
     useState(false);
-  const handleForgotPasswordClick = () => {
-    setIsForgotPasswordModalOpen(true);
-  };
 
-  const handleCloseForgotPasswordModal = () => {
+  const handleForgotPasswordClick = useCallback(() => {
+    setIsForgotPasswordModalOpen(true);
+  }, []);
+
+  const handleCloseForgotPasswordModal = useCallback(() => {
     setIsForgotPasswordModalOpen(false);
-  };
+  }, []);
 
   const {
     rememberMe,

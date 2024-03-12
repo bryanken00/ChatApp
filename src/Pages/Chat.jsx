@@ -6,7 +6,7 @@ import Login from "../components/Functions/login";
 import contact from "../components/Functions/contacts";
 import { useParams, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const ChatApp = () => {
   let { id } = useParams();
@@ -36,43 +36,56 @@ const ChatApp = () => {
     console.log(activeButton);
   }, [activeButton]); // Log activeButton whenever it changes
 
-  const handleContactUser = (user2) => {
-    if (!isClickable) return;
-    setIsClickable(false);
-    setActiveButton(user2);
-    const randomId = uuidv4();
-    const existingContact = contactReadData.find(
-      (user) =>
-        (user.user1 === username && user.user2 === user2) ||
-        (user.user2 === username && user.user1 === user2)
-    );
-
-    if (existingContact) {
-      const newNickArray = loginReadData.filter(
-        (user) => user.Username === user2
+  const handleContactUser = useCallback(
+    (user2) => {
+      if (!isClickable) return;
+      setIsClickable(false);
+      setActiveButton(user2);
+      const randomId = uuidv4();
+      const existingContact = contactReadData.find(
+        (user) =>
+          (user.user1 === username && user.user2 === user2) ||
+          (user.user2 === username && user.user1 === user2)
       );
-      setNickname(newNickArray[0].nickname);
 
-      // setNickname(newNick.nickname);
-      navigate(`/chat/${existingContact.id}`);
-    } else {
-      createData(randomId, username, user2);
-    }
+      if (existingContact) {
+        const newNickArray = loginReadData.filter(
+          (user) => user.Username === user2
+        );
+        setNickname(newNickArray[0].nickname);
 
-    setTimeout(() => {
-      setIsClickable(true);
-    }, 1000);
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      if (id !== undefined) {
-        handleSendMessage();
+        // setNickname(newNick.nickname);
+        navigate(`/chat/${existingContact.id}`);
+      } else {
+        createData(randomId, username, user2);
       }
-    }
-  };
 
-  const chatSystem = (id, chatReadData, username) => {
+      setTimeout(() => {
+        setIsClickable(true);
+      }, 1000);
+    },
+    [
+      isClickable,
+      username,
+      contactReadData,
+      loginReadData,
+      createData,
+      navigate,
+    ]
+  );
+
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        if (id !== undefined) {
+          handleSendMessage();
+        }
+      }
+    },
+    [id, handleSendMessage]
+  );
+
+  const chatSystem = useCallback((id, chatReadData, username) => {
     const filteredChat = chatReadData.filter(
       (account) => account.chat_uid === id
     );
@@ -96,18 +109,18 @@ const ChatApp = () => {
         )
       );
     }
-  };
+  }, []);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  };
+  }, [chatContainerRef]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [chatReadData]);
+  }, [chatReadData, scrollToBottom]);
 
   return (
     <div className="flex h-screen bg-gray-200">
@@ -132,7 +145,7 @@ const ChatApp = () => {
                 activeButton === contact.Username ? "active" : ""
               }`}
             >
-              {contact.Username}
+              {contact.nickname}
             </button>
           ))}
         </ul>
@@ -160,7 +173,7 @@ const ChatApp = () => {
               <ul className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-10">
                 <li>
                   <a
-                    href="#"
+                    href={null}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Profile
@@ -168,7 +181,7 @@ const ChatApp = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href={null}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings

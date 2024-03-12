@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import userFirebase from "../components/Functions/login";
+
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
@@ -8,23 +9,26 @@ const RegisterPage = () => {
   const [message, setMessage] = useState("");
   const { loginReadData, createData } = userFirebase();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password === confirmPassword) {
-      if (loginReadData.some((user) => user.Username === email)) {
-        setMessage("Username already taken");
-      } else {
-        createData(email, password, nickname);
-        setMessage("Registration completed");
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (password === confirmPassword) {
+        if (loginReadData.some((user) => user.Username === email)) {
+          setMessage("Username already taken");
+        } else {
+          createData(email, password, nickname);
+          setMessage("Registration completed");
 
-        // Clear input fields
-        setEmail("");
-        setNickname("");
-        setPassword("");
-        setConfirmPassword("");
-      }
-    } else setMessage("Password not matched");
-  };
+          // Clear input fields
+          setEmail("");
+          setNickname("");
+          setPassword("");
+          setConfirmPassword("");
+        }
+      } else setMessage("Password not matched");
+    },
+    [confirmPassword, createData, email, loginReadData, nickname, password]
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
