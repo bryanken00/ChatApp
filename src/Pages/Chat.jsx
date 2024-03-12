@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import Chat from "../components/PagesFunction/Chat";
 import Login from "../components/Functions/login";
 import contact from "../components/Functions/contacts";
@@ -14,6 +15,7 @@ const ChatApp = () => {
   const [getNickname, setNickname] = useState("Contact Name");
   const navigate = useNavigate();
   const chatContainerRef = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Added state for menu visibility
 
   const {
     handleLogout,
@@ -96,7 +98,6 @@ const ChatApp = () => {
     }
   };
 
-  // Function to scroll to the bottom of the chat container
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -104,7 +105,6 @@ const ChatApp = () => {
     }
   };
 
-  // Scroll to bottom when chatReadData changes (i.e., new messages are added)
   useEffect(() => {
     scrollToBottom();
   }, [chatReadData]);
@@ -148,12 +148,43 @@ const ChatApp = () => {
             </button>
             <span className="text-lg font-semibold">{getNickname}</span>
           </div>
-          <span
-            className="text-lg font-semibold cursor-pointer"
-            onClick={handleLogout}
-          >
-            Logout
-          </span>
+          <div className="relative">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-lg font-semibold bg-transparent rounded-lg py-2 px-4 flex items-center"
+            >
+              <span className="mr-4">Account Settings </span>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </button>
+            {isMenuOpen && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-10">
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
         </div>
         <div
           className="flex-1 overflow-y-auto px-4 py-2"

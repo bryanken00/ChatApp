@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import firebaseMessage from "../Functions/message";
 
@@ -35,15 +35,15 @@ const Chat = () => {
     if (!storedUserDataString) navigate("/");
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem("userData");
     navigate("/");
-  };
+  }, [navigate]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     createData(username, message, getCUID);
     setMessage("");
-  };
+  }, [createData, username, message, getCUID]);
 
   return {
     handleLogout,

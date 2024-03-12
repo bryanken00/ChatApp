@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import firebaseCRUD from "../Functions/login";
 
@@ -31,7 +31,7 @@ const Login_localStorage = () => {
 
   useEffect(() => {
     if (storedUserDataString) navigate("/chat");
-  });
+  }, [navigate, storedUserDataString]);
 
   const handleRememberMe = () => {
     setRememberMe(!rememberMe);
@@ -45,22 +45,25 @@ const Login_localStorage = () => {
       localStorage.removeItem("remember.user");
       localStorage.removeItem("remember.username");
     }
-  }, [handleRememberMe]);
+  }, [rememberMe, userName]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userData = loginReadData.find(
-      (data) => data.Username === userName && data.Password === password
-    );
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const userData = loginReadData.find(
+        (data) => data.Username === userName && data.Password === password
+      );
 
-    if (userData) {
-      localStorage.setItem("userData", JSON.stringify(userData));
-      navigate("/chat");
-    } else {
-      setErrorMessage("Incorrect username or password. Please try again.");
-    }
-    if (storedRememberMe !== null) setRememberMe(true);
-  };
+      if (userData) {
+        localStorage.setItem("userData", JSON.stringify(userData));
+        navigate("/chat");
+      } else {
+        setErrorMessage("Incorrect username or password. Please try again.");
+      }
+      if (storedRememberMe !== null) setRememberMe(true);
+    },
+    [loginReadData, userName, password, storedRememberMe, navigate]
+  );
 
   return {
     rememberMe,

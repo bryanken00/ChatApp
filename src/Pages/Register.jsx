@@ -19,6 +19,7 @@ const RegisterPage = () => {
 
         // Clear input fields
         setEmail("");
+        setNickname("");
         setPassword("");
         setConfirmPassword("");
       }
