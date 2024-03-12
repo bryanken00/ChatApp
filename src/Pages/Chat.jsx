@@ -33,7 +33,6 @@ const ChatApp = () => {
 
   useEffect(() => {
     setCUID(id);
-    console.log(activeButton);
   }, [activeButton]); // Log activeButton whenever it changes
 
   const handleContactUser = useCallback(
@@ -86,22 +85,27 @@ const ChatApp = () => {
   );
 
   const chatSystem = useCallback((id, chatReadData, username) => {
-    const filteredChat = chatReadData.filter(
-      (account) => account.chat_uid === id
-    );
-    if (id === undefined) return null;
-    else {
+    if (id === undefined) {
+      return (
+        <div className="text-center text-gray-500">
+          <p>Welcome to My Chat App</p>
+        </div>
+      );
+    } else {
+      const filteredChat = chatReadData.filter(
+        (account) => account.chat_uid === id
+      );
       return filteredChat.map((account) =>
         account.username !== username ? (
           <div key={account.id} className="flex flex-col mb-4 text-left">
-            <span className="font-semibold">{account.username}:</span>
+            <span className="font-semibold">{account.username}</span>
             <p className="bg-gray-300 rounded-lg p-2 mt-1 self-start">
               {account.message}
             </p>
           </div>
         ) : (
           <div key={account.id} className="flex flex-col mb-4">
-            <span className="font-semibold text-right">You:</span>
+            <span className="font-semibold text-right">You</span>
             <p className="bg-blue-500 text-white rounded-lg p-2 mt-1 self-end">
               {account.message}
             </p>
@@ -137,17 +141,21 @@ const ChatApp = () => {
           </div>
         </div>
         <ul className="flex flex-col space-y-2">
-          {loginReadData.map((contact, index) => (
-            <button
-              key={index}
-              onClick={() => handleContactUser(contact.Username)}
-              className={`bg-blue-500 text-white px-4 py-2 rounded-full ${
-                activeButton === contact.Username ? "active" : ""
-              }`}
-            >
-              {contact.nickname}
-            </button>
-          ))}
+          {loginReadData.map((contact, index) =>
+            contact.Username === username ? (
+              ""
+            ) : (
+              <button
+                key={index}
+                onClick={() => handleContactUser(contact.Username)}
+                className={`bg-blue-500 text-white px-4 py-2 rounded-full ${
+                  activeButton === contact.Username ? "active" : ""
+                }`}
+              >
+                {contact.nickname}
+              </button>
+            )
+          )}
         </ul>
       </div>
       <div className="flex flex-col w-full">
